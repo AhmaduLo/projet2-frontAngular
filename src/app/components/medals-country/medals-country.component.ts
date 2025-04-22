@@ -4,9 +4,9 @@ import { OlympicCountry } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
 @Component({
-    selector: 'app-medals-country',
-    imports: [],
-    template: `
+  selector: 'app-medals-country',
+  imports: [],
+  template: `
     <section>
       <div class="tittle">Medals per Country</div>
       <div class="numbers">
@@ -21,16 +21,17 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
       </div>
     </section>
   `,
-    styleUrls: ['./medals-country.component.scss']
+  styleUrls: ['./medals-country.component.scss'],
 })
 export class MedalsCountryComponent {
   public olympics$: Observable<OlympicCountry[] | null> =
     this.olympicService.getOlympics();
 
+  // Propriétés pour stocker les résultats à afficher
   public totalJOs: number = 0;
   public totalCountries: number = 0;
 
-  constructor(private olympicService: OlympicService) {}
+  constructor(private olympicService: OlympicService) { }
 
   ngOnInit(): void {
     this.olympics$
@@ -42,7 +43,10 @@ export class MedalsCountryComponent {
           const allYears = olympics.flatMap((country) =>
             country.participations.map((participation) => participation.year)
           );
+          // 2. Utilise un Set pour ne garder que les années uniques
           const uniqueJOs = new Set(allYears).size;
+
+          // 3. Retourne un objet avec leurs valeurs calculées
           return {
             joCount: uniqueJOs,
             countryCount: olympics.length,

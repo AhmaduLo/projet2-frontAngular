@@ -30,14 +30,14 @@ export class NameCountryComponent {
 
   getTotalMedals(): number {
     return this.countryData.participations.reduce(
-      (sum, p) => sum + p.medalsCount,
+      (sum, p) => sum + p.medalsCount, // Somme de toutes les médailles par participation
       0
     );
   }
 
   getTotalAthletes(): number {
     return this.countryData.participations.reduce(
-      (sum, p) => sum + p.athleteCount,
+      (sum, p) => sum + p.athleteCount, // Somme de tous les athlètes sur toutes les éditions
       0
     );
   }

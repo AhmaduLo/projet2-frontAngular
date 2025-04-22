@@ -27,9 +27,9 @@ Chart.register(
 );
 
 @Component({
-    selector: 'app-line-graph',
-    imports: [CommonModule, BaseChartDirective],
-    template: `
+  selector: 'app-line-graph',
+  imports: [CommonModule, BaseChartDirective],
+  template: `
    <div class="chart-container" *ngIf="lineChartData?.datasets?.length">
   <canvas baseChart
     [data]="lineChartData"
@@ -38,19 +38,21 @@ Chart.register(
   </canvas>
 </div>
   `,
-    styleUrl: './line-graph.component.scss'
+  styleUrl: './line-graph.component.scss'
 })
 export class LineGraphComponent implements OnChanges {
   @Input() countryData?: OlympicCountry;
 
+  // Configuration initiale des données du graphique
   lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
     datasets: [],
   };
 
+  // Options d’affichage du graphique
   lineChartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
-    maintainAspectRatio: false, 
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
@@ -73,18 +75,24 @@ export class LineGraphComponent implements OnChanges {
 
   lineChartType: 'line' = 'line';
 
-  
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.countryData) {
       const labels = this.countryData.participations.map(p => p.year.toString());
 
+      // Extrait le nombre de médailles pour chaque année
       const medals = this.countryData.participations.map(p => p.medalsCount);
+
+      // Extrait le nombre d’athlètes pour chaque année
       const athletes = this.countryData.participations.map(p => p.athleteCount);
-      const ratio = this.countryData.participations.map(p => 
+
+      // Calcule le ratio médailles / athlètes (arrondi à 2 décimales)
+      const ratio = this.countryData.participations.map(p =>
         p.athleteCount ? +(p.medalsCount / p.athleteCount).toFixed(2) : 0
       );
 
+      // Met à jour les données du graphique
       this.lineChartData = {
         labels,
         datasets: [
